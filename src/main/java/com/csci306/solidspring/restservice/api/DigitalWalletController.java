@@ -12,19 +12,10 @@ import com.csci306.solidspring.restservice.wallet.DigitalWallet;
 public class DigitalWalletController {
 
 	@GetMapping("/balance")
-	public DigitalWallet wallet() {
-		
-		try 
-		{	
-			return DigitalWallet
-					.getInstance()
-					.accountBalance();
-		} catch (Exception e)
-		{
-			throw new ResponseStatusException(
-					HttpStatus.NOT_FOUND, e.toString() );
-			
-		}
+	public DigitalWallet wallet() {		
+		return DigitalWallet
+				.getInstance()
+				.accountBalance();
 	}
 	
 	@GetMapping("/transaction")
