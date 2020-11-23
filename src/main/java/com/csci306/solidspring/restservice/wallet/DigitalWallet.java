@@ -1,10 +1,11 @@
 package com.csci306.solidspring.restservice.wallet;
 
 import com.csci306.solidspring.restservice.coins.Bitcoin;
+import com.csci306.solidspring.restservice.coins.BitcoinRobust;
 
 public class DigitalWallet {
 	
-	private Bitcoin btc = Bitcoin.getInstance();
+	private BitcoinRobust btc = BitcoinRobust.getInstance();
 	
 	private static DigitalWallet wallet = new DigitalWallet();
 	

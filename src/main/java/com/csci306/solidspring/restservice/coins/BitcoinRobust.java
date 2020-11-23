@@ -1,17 +1,18 @@
 package com.csci306.solidspring.restservice.coins;
 
-public class Bitcoin {
-	protected static final String fName = "Bitcoin";
-	protected static final String fWhitePaper = "https://bitcoin.org/bitcoin.pdf";
-	protected double fBTC = 0;
+
+public class BitcoinRobust extends Bitcoin {
+	private static final double BTC_USD = 18656;
+	private static final double TRANSACTION_FEE_USD = 11.66;
 	
-	private static Bitcoin bitcoin = new Bitcoin();
+	private static BitcoinRobust bitcoinRobust = new BitcoinRobust();
+
+	private BitcoinRobust() { }
 	
-	protected Bitcoin() { };
 	
-	public static Bitcoin getInstance() 
+	public static BitcoinRobust getInstance() 
 	{
-		return bitcoin;
+		return bitcoinRobust;
 	}
 	
 	/**
@@ -23,13 +24,15 @@ public class Bitcoin {
 	 * @return this
 	 * @throws Exception
 	 */
-	public Bitcoin processTransaction( double requestedBTC ) throws Exception
+	public BitcoinRobust processTransaction( double requestedBTC ) throws Exception
 	{
-		if( fBTC + requestedBTC < 0 )
+		if( (fBTC + requestedBTC) * BTC_USD - TRANSACTION_FEE_USD < 0 )
 		{
-			throw new Exception(String.format("\nInsufficient funds:\n\t BTC Available: %1$s\n\t BTC Requested: %2$s", fBTC, requestedBTC));
+			throw new Exception(String.format("\nInsufficient funds:" +
+		"\n\t BTC Available: %1$s\n\t BTC Requested: %2$s\n\t BTC Transation Fee (USD): %3$s",
+					fBTC, requestedBTC, TRANSACTION_FEE_USD));
 		} else {
-			fBTC = fBTC + requestedBTC;
+			fBTC = fBTC + requestedBTC - (TRANSACTION_FEE_USD / BTC_USD);
 		}
 		
 		return this;
@@ -40,7 +43,7 @@ public class Bitcoin {
 	 * 
 	 * @return this
 	 */
-	public Bitcoin setZero()
+	public BitcoinRobust setZero()
 	{
 		fBTC = 0;
 		
@@ -52,7 +55,7 @@ public class Bitcoin {
 	 * 
 	 * @return this
 	 */
-	public Bitcoin accountBalance()
+	public BitcoinRobust accountBalance()
 	{
 		return this;
 	}
@@ -78,5 +81,10 @@ public class Bitcoin {
 	public double getSatoshis()
 	{
 		return fBTC * 100000000;
+	}
+	
+	public double getTransactionFeeUSD()
+	{
+		return TRANSACTION_FEE_USD;
 	}
 }
