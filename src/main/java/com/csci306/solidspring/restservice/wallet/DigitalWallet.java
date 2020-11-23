@@ -1,12 +1,12 @@
 package com.csci306.solidspring.restservice.wallet;
 
-import com.csci306.solidspring.restservice.coins.Bitcoin;
-
 public class DigitalWallet {
 	
-	private Bitcoin btc = Bitcoin.getInstance();
-	
 	private static DigitalWallet wallet = new DigitalWallet();
+	
+	private static final String fName = "Bitcoin";
+	private static final String fWhitePaper = "https://bitcoin.org/bitcoin.pdf";
+	private double fBTC = 0;
 	
 	private DigitalWallet() { };
 	
@@ -16,19 +16,51 @@ public class DigitalWallet {
 	}
 	
 	
-	public Bitcoin processTransaction( double amount ) throws Exception
+	public DigitalWallet processTransaction( double amount ) throws Exception
 	{
-		return btc.processTransaction( amount );
+		if( fBTC + amount < 0 )
+		{
+			throw new Exception(String.format("\nInsufficient funds:\n\t BTC Available: %1$s\n\t BTC Requested: %2$s", fBTC, amount));
+		} else {
+			fBTC = fBTC + amount;
+		}
+		
+		return this;
 	}
 	
-	public Bitcoin zero()
+	public DigitalWallet zero()
 	{
-		return btc.setZero();
+		fBTC = 0;
+		
+		return this;
 	}
 	
-	public Bitcoin accountBalance()
+	public DigitalWallet accountBalance()
 	{
-		return btc.accountBalance();
+		return this;
+	}
+	
+	/////////////////////////////////////////
+	//	For Serialization
+	////////////////////////////////////////
+	public double getBTC() 
+	{
+		return fBTC;
+	}
+	
+	public String getName()
+	{
+		return fName;
+	}
+	
+	public String getWhitePaper()
+	{
+		return fWhitePaper;
+	}
+	
+	public double getSatoshis()
+	{
+		return fBTC * 100000000;
 	}
 
 }

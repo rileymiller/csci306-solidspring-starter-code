@@ -6,14 +6,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.csci306.solidspring.restservice.coins.Bitcoin;
 import com.csci306.solidspring.restservice.wallet.DigitalWallet;
 
 @RestController
 public class DigitalWalletController {
 
 	@GetMapping("/balance")
-	public Bitcoin wallet() {
+	public DigitalWallet wallet() {
 		
 		try 
 		{	
@@ -29,7 +28,7 @@ public class DigitalWalletController {
 	}
 	
 	@GetMapping("/transaction")
-	public Bitcoin transaction(
+	public DigitalWallet transaction(
 			@RequestParam(value = "value", defaultValue = "0" )
 			String value ) 
 	{
@@ -58,7 +57,7 @@ public class DigitalWalletController {
 	}
 	
 	@GetMapping("/zero")
-	public Bitcoin zero()
+	public DigitalWallet zero()
 	{
 		return DigitalWallet
 				.getInstance()
