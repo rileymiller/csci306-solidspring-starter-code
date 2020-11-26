@@ -16,7 +16,6 @@ public class DigitalWallet {
 		return wallet;
 	}
 	
-	
 	public Bitcoin processTransaction( double amount ) throws Exception
 	{
 		return btc.processTransaction( amount );

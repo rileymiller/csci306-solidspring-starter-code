@@ -14,18 +14,9 @@ public class DigitalWalletController {
 
 	@GetMapping("/balance")
 	public Bitcoin wallet() {
-		
-		try 
-		{	
-			return DigitalWallet
-					.getInstance()
-					.accountBalance();
-		} catch (Exception e)
-		{
-			throw new ResponseStatusException(
-					HttpStatus.NOT_FOUND, e.toString() );
-			
-		}
+		return DigitalWallet
+				.getInstance()
+				.accountBalance();
 	}
 	
 	@GetMapping("/transaction")

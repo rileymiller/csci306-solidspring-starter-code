@@ -9,7 +9,6 @@ public class BitcoinRobust extends Bitcoin {
 
 	private BitcoinRobust() { }
 	
-	
 	public static BitcoinRobust getInstance() 
 	{
 		return bitcoinRobust;
@@ -38,51 +37,9 @@ public class BitcoinRobust extends Bitcoin {
 		return this;
 	}
 	
-	/**
-	 * Sets the BTC balance to zero
-	 * 
-	 * @return this
-	 */
-	public BitcoinRobust setZero()
-	{
-		fBTC = 0;
-		
-		return this;
-	}
-	
-	/**
-	 * Returns the BTC balance in the Digital Wallet
-	 * 
-	 * @return this
-	 */
-	public BitcoinRobust accountBalance()
-	{
-		return this;
-	}
-	
 	/////////////////////////////////////////
 	//	For Serialization
-	////////////////////////////////////////
-	public double getBTC() 
-	{
-		return fBTC;
-	}
-	
-	public String getName()
-	{
-		return fName;
-	}
-	
-	public String getWhitePaper()
-	{
-		return fWhitePaper;
-	}
-	
-	public double getSatoshis()
-	{
-		return fBTC * 100000000;
-	}
-	
+	////////////////////////////////////////	
 	public double getTransactionFeeUSD()
 	{
 		return TRANSACTION_FEE_USD;
