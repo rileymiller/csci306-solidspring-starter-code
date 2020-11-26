@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.csci306.solidspring.restservice.coins.Bitcoin;
 import com.csci306.solidspring.restservice.coins.BitcoinRobust;
 import com.csci306.solidspring.restservice.coins.ICoin;
 import com.csci306.solidspring.restservice.wallet.DigitalWallet;
@@ -18,31 +17,31 @@ public class DigitalWalletController {
 	
 	@GetMapping("/balance")
 	public ICoin wallet() {
-		try 
-		{	
-			return DigitalWallet
-					.getInstance()
-					.accountBalance( btc );
-		} catch (Exception e)
-		{
-			throw new ResponseStatusException(
-					HttpStatus.NOT_FOUND, e.toString() );
-			
-		}
+		return DigitalWallet
+				.getInstance()
+				.accountBalance( btc );
 	}
 	
 	@GetMapping("/transaction")
 	public ICoin transaction(
 			@RequestParam(value = "value", defaultValue = "0" )
-			String value ) throws Exception
+			String value )
 	{
 		try
 		{
 			double parsedValue = Double.parseDouble( value );
 			
-			return DigitalWallet
-					.getInstance()
-					.processTransaction( btc, parsedValue );
+			try 
+			{				
+				return DigitalWallet
+						.getInstance()
+						.processTransaction( btc, parsedValue );
+			} 
+			catch( Exception e )
+			{
+				throw new ResponseStatusException(
+						HttpStatus.BAD_REQUEST, e.toString() );
+			}
 			
 		} 
 		catch ( NumberFormatException e )
