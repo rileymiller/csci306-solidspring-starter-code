@@ -1,5 +1,7 @@
 package com.csci306.solidspring.restservice.coins;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 public class BitcoinRobust extends Bitcoin {
 	private static final double BTC_USD = 18656;
@@ -24,65 +26,33 @@ public class BitcoinRobust extends Bitcoin {
 	 * @return this
 	 * @throws Exception
 	 */
-	public BitcoinRobust processTransaction( double requestedBTC ) throws Exception
+	public BitcoinRobust processTransaction( double requestedBTC )
 	{
-		if( (fBTC + requestedBTC) * BTC_USD - TRANSACTION_FEE_USD < 0 )
+		try 
 		{
-			throw new Exception(String.format("\nInsufficient funds:" +
-		"\n\t BTC Available: %1$s\n\t BTC Requested: %2$s\n\t BTC Transation Fee (USD): %3$s",
-					fBTC, requestedBTC, TRANSACTION_FEE_USD));
-		} else {
-			fBTC = fBTC + requestedBTC - (TRANSACTION_FEE_USD / BTC_USD);
+			if( (fBTC + requestedBTC) * BTC_USD - TRANSACTION_FEE_USD < 0 )
+			{
+				throw new Exception(
+						String.format( "\nInsufficient funds:\n\t BTC Available:"
+								+ " %1$s\n\t BTC Requested: %2$s\n\t BTC Transation Fee (USD): %3$s",
+						fBTC, requestedBTC, TRANSACTION_FEE_USD));
+			} else 
+			{
+				fBTC = fBTC + requestedBTC - (TRANSACTION_FEE_USD / BTC_USD);
+			}
+		} 
+		catch (Exception e)
+		{
+			throw new ResponseStatusException(
+					HttpStatus.BAD_REQUEST, e.toString() );
 		}
 		
-		return this;
-	}
-	
-	/**
-	 * Sets the BTC balance to zero
-	 * 
-	 * @return this
-	 */
-	public BitcoinRobust setZero()
-	{
-		fBTC = 0;
-		
-		return this;
-	}
-	
-	/**
-	 * Returns the BTC balance in the Digital Wallet
-	 * 
-	 * @return this
-	 */
-	public BitcoinRobust accountBalance()
-	{
 		return this;
 	}
 	
 	/////////////////////////////////////////
 	//	For Serialization
 	////////////////////////////////////////
-	public double getBTC() 
-	{
-		return fBTC;
-	}
-	
-	public String getName()
-	{
-		return fName;
-	}
-	
-	public String getWhitePaper()
-	{
-		return fWhitePaper;
-	}
-	
-	public double getSatoshis()
-	{
-		return fBTC * 100000000;
-	}
-	
 	public double getTransactionFeeUSD()
 	{
 		return TRANSACTION_FEE_USD;

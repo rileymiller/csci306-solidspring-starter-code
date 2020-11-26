@@ -7,19 +7,22 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.csci306.solidspring.restservice.coins.Bitcoin;
+import com.csci306.solidspring.restservice.coins.BitcoinRobust;
+import com.csci306.solidspring.restservice.coins.ICoin;
 import com.csci306.solidspring.restservice.wallet.DigitalWallet;
 
 @RestController
 public class DigitalWalletController {
-
+	
+	private BitcoinRobust btc = BitcoinRobust.getInstance();
+	
 	@GetMapping("/balance")
-	public Bitcoin wallet() {
-		
+	public ICoin wallet() {
 		try 
 		{	
 			return DigitalWallet
 					.getInstance()
-					.accountBalance();
+					.accountBalance( btc );
 		} catch (Exception e)
 		{
 			throw new ResponseStatusException(
@@ -29,25 +32,17 @@ public class DigitalWalletController {
 	}
 	
 	@GetMapping("/transaction")
-	public Bitcoin transaction(
+	public ICoin transaction(
 			@RequestParam(value = "value", defaultValue = "0" )
-			String value ) 
+			String value ) throws Exception
 	{
 		try
 		{
 			double parsedValue = Double.parseDouble( value );
 			
-			try 
-			{
-				return DigitalWallet
-						.getInstance()
-						.processTransaction( parsedValue );
-			}
-			catch ( Exception e )
-			{
-				throw new ResponseStatusException(
-						HttpStatus.BAD_REQUEST, e.toString() );
-			}
+			return DigitalWallet
+					.getInstance()
+					.processTransaction( btc, parsedValue );
 			
 		} 
 		catch ( NumberFormatException e )
@@ -58,10 +53,10 @@ public class DigitalWalletController {
 	}
 	
 	@GetMapping("/zero")
-	public Bitcoin zero()
+	public ICoin zero()
 	{
 		return DigitalWallet
 				.getInstance()
-				.zero();
+				.zero( btc );
 	}
 }

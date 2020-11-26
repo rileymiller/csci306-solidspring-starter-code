@@ -1,12 +1,8 @@
 package com.csci306.solidspring.restservice.wallet;
 
-import com.csci306.solidspring.restservice.coins.Bitcoin;
-import com.csci306.solidspring.restservice.coins.BitcoinRobust;
+import com.csci306.solidspring.restservice.coins.ICoin;
 
 public class DigitalWallet {
-	
-	private BitcoinRobust btc = BitcoinRobust.getInstance();
-	
 	private static DigitalWallet wallet = new DigitalWallet();
 	
 	private DigitalWallet() { };
@@ -17,19 +13,18 @@ public class DigitalWallet {
 	}
 	
 	
-	public Bitcoin processTransaction( double amount ) throws Exception
+	public ICoin processTransaction( ICoin coin, double amount ) throws Exception
 	{
-		return btc.processTransaction( amount );
+		return coin.processTransaction( amount );
 	}
 	
-	public Bitcoin zero()
+	public ICoin zero( ICoin coin )
 	{
-		return btc.setZero();
+		return coin.setZero();
 	}
 	
-	public Bitcoin accountBalance()
+	public ICoin accountBalance( ICoin coin )
 	{
-		return btc.accountBalance();
+		return coin.accountBalance();
 	}
-
 }

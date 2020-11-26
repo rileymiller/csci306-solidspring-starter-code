@@ -1,6 +1,9 @@
 package com.csci306.solidspring.restservice.coins;
 
-public class Bitcoin {
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
+public class Bitcoin implements ICoin {
 	protected static final String fName = "Bitcoin";
 	protected static final String fWhitePaper = "https://bitcoin.org/bitcoin.pdf";
 	protected double fBTC = 0;
@@ -23,13 +26,25 @@ public class Bitcoin {
 	 * @return this
 	 * @throws Exception
 	 */
-	public Bitcoin processTransaction( double requestedBTC ) throws Exception
+	public Bitcoin processTransaction( double requestedBTC )
 	{
-		if( fBTC + requestedBTC < 0 )
+		
+		try 
 		{
-			throw new Exception(String.format("\nInsufficient funds:\n\t BTC Available: %1$s\n\t BTC Requested: %2$s", fBTC, requestedBTC));
-		} else {
-			fBTC = fBTC + requestedBTC;
+			if( fBTC + requestedBTC < 0 )
+			{
+				throw new Exception(
+						String.format( "\nInsufficient funds:\n\t"
+						+ " BTC Available: %1$s\n\t BTC Requested: %2$s", fBTC, requestedBTC ));
+			} else 
+			{
+				fBTC = fBTC + requestedBTC;
+			}
+		} 
+		catch ( Exception e )
+		{
+			throw new ResponseStatusException(
+					HttpStatus.BAD_REQUEST, e.toString() );
 		}
 		
 		return this;
