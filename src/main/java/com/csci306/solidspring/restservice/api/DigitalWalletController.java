@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.csci306.solidspring.restservice.coins.ICoin;
 import com.csci306.solidspring.restservice.coins.bitcoin.BitcoinRobust;
 import com.csci306.solidspring.restservice.coins.ethereum.Ethereum;
+import com.csci306.solidspring.restservice.smartcontract.ISmartContract;
 import com.csci306.solidspring.restservice.wallet.DigitalWallet;
 
 @RestController
@@ -96,6 +97,24 @@ public class DigitalWalletController {
 			throw new ResponseStatusException(
 					HttpStatus.BAD_REQUEST, e.toString() );
 		}
+	}
+	
+	@GetMapping("/eth/add_contract")
+	public ISmartContract eth_add_contract(
+			@RequestParam(value = "code", defaultValue = "0" )
+			String code )
+	{
+			try 
+			{				
+				return DigitalWallet
+						.getInstance()
+						.addContract( eth, code );
+			} 
+			catch( Exception e )
+			{
+				throw new ResponseStatusException(
+						HttpStatus.BAD_REQUEST, e.toString() );
+			}
 	}
 	
 	@GetMapping("/eth/zero")

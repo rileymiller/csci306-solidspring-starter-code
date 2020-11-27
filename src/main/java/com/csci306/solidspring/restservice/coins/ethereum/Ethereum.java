@@ -1,11 +1,15 @@
 package com.csci306.solidspring.restservice.coins.ethereum;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.csci306.solidspring.restservice.coins.ICoin;
+import com.csci306.solidspring.restservice.smartcontract.ISmartContract;
 
-public class Ethereum implements ICoin 
+public class Ethereum implements ICoin, ISmartContract
 {
 	private static final double 	ETHER_USD = 524.44;
 	private static final double 	TRANSACTION_FEE_USD = 11.66;
@@ -14,13 +18,14 @@ public class Ethereum implements ICoin
 	private static final String		WHITE_PAPER = "https://blockchainlab.com/pdf/Ethereum_white_paper-a_next_generation_smart_contract_and_decentralized_application_platform-vitalik-buterin.pdf";
 	
 	private double 					ether = 0;
-	
+	private List<SmartContract>		smartContracts;
 	private static Ethereum 		ethereum = new Ethereum();
 	
 	private Ethereum() { };
 	
 	public static Ethereum getInstance() 
 	{
+		
 		return ethereum;
 	}
 	
@@ -56,10 +61,24 @@ public class Ethereum implements ICoin
 
 		return this;
 	}
-
+	
 	@Override
 	public ICoin accountBalance()
 	{
+		return this;
+	}
+	
+	@Override
+	public ISmartContract addContract( String newContract )
+	{
+		if( smartContracts == null )
+		{
+			smartContracts = new ArrayList<>();
+		}
+		
+		SmartContract 	contract = new SmartContract(newContract);
+		
+		smartContracts.add(contract);
 		return this;
 	}
 	
@@ -84,5 +103,10 @@ public class Ethereum implements ICoin
 	public double getTransactionFeeUSD()
 	{
 		return TRANSACTION_FEE_USD;
+	}
+	
+	public List<SmartContract> getSmartContracts()
+	{
+		return smartContracts;
 	}
 }
