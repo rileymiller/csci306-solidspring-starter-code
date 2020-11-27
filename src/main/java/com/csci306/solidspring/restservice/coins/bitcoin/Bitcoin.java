@@ -1,11 +1,13 @@
-package com.csci306.solidspring.restservice.coins;
+package com.csci306.solidspring.restservice.coins.bitcoin;
+
+import com.csci306.solidspring.restservice.coins.ICoin;
 
 public class Bitcoin implements ICoin {
-	protected static final String fName = "Bitcoin";
-	protected static final String fWhitePaper = "https://bitcoin.org/bitcoin.pdf";
-	protected double fBTC = 0;
+	protected static final String 	NAME = "Bitcoin";
+	protected static final String 	WHITE_PAPER = "https://bitcoin.org/bitcoin.pdf";
+	protected double 				btc = 0;
 	
-	private static Bitcoin bitcoin = new Bitcoin();
+	private static Bitcoin 			bitcoin = new Bitcoin();
 	
 	protected Bitcoin() { };
 	
@@ -25,14 +27,14 @@ public class Bitcoin implements ICoin {
 	 */
 	public Bitcoin processTransaction( double requestedBTC ) throws Exception
 	{
-		if( fBTC + requestedBTC < 0 )
+		if( btc + requestedBTC < 0 )
 		{
 			throw new Exception(
 					String.format( "\nInsufficient funds:\n\t"
-					+ " BTC Available: %1$s\n\t BTC Requested: %2$s", fBTC, requestedBTC ));
+					+ " BTC Available: %1$s\n\t BTC Requested: %2$s", btc, requestedBTC ));
 		} else 
 		{
-			fBTC = fBTC + requestedBTC;
+			btc = btc + requestedBTC;
 		}
 		
 		return this;
@@ -45,7 +47,7 @@ public class Bitcoin implements ICoin {
 	 */
 	public Bitcoin setZero()
 	{
-		fBTC = 0;
+		btc = 0;
 		
 		return this;
 	}
@@ -65,21 +67,21 @@ public class Bitcoin implements ICoin {
 	////////////////////////////////////////
 	public double getBTC() 
 	{
-		return fBTC;
+		return btc;
 	}
 	
 	public String getName()
 	{
-		return fName;
+		return NAME;
 	}
 	
 	public String getWhitePaper()
 	{
-		return fWhitePaper;
+		return WHITE_PAPER;
 	}
 	
 	public double getSatoshis()
 	{
-		return fBTC * 100000000;
+		return btc * 100000000;
 	}
 }

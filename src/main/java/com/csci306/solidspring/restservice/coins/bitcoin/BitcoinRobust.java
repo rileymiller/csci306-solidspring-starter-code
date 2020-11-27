@@ -1,4 +1,4 @@
-package com.csci306.solidspring.restservice.coins;
+package com.csci306.solidspring.restservice.coins.bitcoin;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -30,15 +30,15 @@ public class BitcoinRobust extends Bitcoin {
 	{
 		try 
 		{
-			if( (fBTC + requestedBTC) * BTC_USD - TRANSACTION_FEE_USD < 0 )
+			if( (btc + requestedBTC) * BTC_USD - TRANSACTION_FEE_USD < 0 )
 			{
 				throw new Exception(
 						String.format( "\nInsufficient funds:\n\t BTC Available:"
 								+ " %1$s\n\t BTC Requested: %2$s\n\t BTC Transation Fee (USD): %3$s",
-						fBTC, requestedBTC, TRANSACTION_FEE_USD));
+						btc, requestedBTC, TRANSACTION_FEE_USD));
 			} else 
 			{
-				fBTC = fBTC + requestedBTC - (TRANSACTION_FEE_USD / BTC_USD);
+				btc = btc + requestedBTC - (TRANSACTION_FEE_USD / BTC_USD);
 			}
 		} 
 		catch (Exception e)
